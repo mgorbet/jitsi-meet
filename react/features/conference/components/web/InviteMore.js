@@ -20,6 +20,11 @@ type Props = {
     _tileViewEnabled: Boolean,
 
     /**
+     * Whether bubble view is enabled.
+     */
+    _bubbleViewEnabled: Boolean,
+
+    /**
      * Whether to show the option to invite more people
      * instead of the subject.
      */
@@ -45,6 +50,7 @@ type Props = {
  */
 function InviteMore({
     _tileViewEnabled,
+    _bubbleViewEnabled,
     _visible,
     onClick,
     t

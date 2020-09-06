@@ -106,6 +106,11 @@ type Props = {
      * If true, it tells the thumbnail that it needs to behave differently. E.g. react differently to a single tap.
      */
     tileView?: boolean
+
+    /**
+     * If true, it tells the thumbnail that it needs to behave differently. E.g. react differently to a single tap.
+     */
+    bubbleView?: boolean
 };
 
 /**
@@ -127,7 +132,8 @@ function Thumbnail(props: Props) {
         disableTint,
         participant,
         renderDisplayName,
-        tileView
+        tileView,
+        bubbleView
     } = props;
 
     const participantId = participant.id;
@@ -142,14 +148,14 @@ function Thumbnail(props: Props) {
             onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
             style = { [
                 styles.thumbnail,
-                participant.pinned && !tileView
+                participant.pinned && !tileView && !bubbleView
                     ? _styles.thumbnailPinned : null,
                 props.styleOverrides || null
             ] }
             touchFeedback = { false }>
 
             <ParticipantView
-                avatarSize = { tileView ? AVATAR_SIZE * 1.5 : AVATAR_SIZE }
+                avatarSize = { (tileView || bubbleView) ? AVATAR_SIZE * 1.5 : AVATAR_SIZE }
                 disableVideo = { isScreenShare || participant.isFakeParticipant }
                 participantId = { participantId }
                 style = { _styles.participantViewStyle }
@@ -214,9 +220,9 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
          * @returns {void}
          */
         _onClick() {
-            const { participant, tileView } = ownProps;
+            const { participant, tileView, bubbleView } = ownProps;
 
-            if (tileView) {
+            if (tileView || bubbleView) {
                 dispatch(toggleToolboxVisible());
             } else {
                 dispatch(pinParticipant(participant.pinned ? null : participant.id));

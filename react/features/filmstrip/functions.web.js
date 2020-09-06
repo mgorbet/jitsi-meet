@@ -7,6 +7,7 @@ import {
 import { toState } from '../base/redux';
 
 import { TILE_ASPECT_RATIO } from './constants';
+import { BUBBLE_ASPECT_RATIO } from './constants';
 
 declare var interfaceConfig: Object;
 
@@ -112,6 +113,40 @@ export function calculateThumbnailSizeForTileView({
     const aspectRatioHeight = initialWidth / TILE_ASPECT_RATIO;
     const height = Math.floor(Math.min(aspectRatioHeight, viewHeight / visibleRows));
     const width = Math.floor(TILE_ASPECT_RATIO * height);
+
+    return {
+        height,
+        width
+    };
+}
+
+/**
+ * Calculates the size for thumbnails when in bubble view layout.
+ *
+ * @param {Object} dimensions - The desired dimensions of the bubble view grid.
+ * @returns {{height, width}}
+ */
+export function calculateThumbnailSizeForBubbleView({
+    columns,
+    visibleRows,
+    clientWidth,
+    clientHeight
+}: Object) {
+    // The distance from the top and bottom of the screen, as set by CSS, to
+    // avoid overlapping UI elements.
+    const topBottomPadding = 200;
+
+    // Minimum space to keep between the sides of the tiles and the sides
+    // of the window.
+    const sideMargins = 30 * 2;
+
+    const verticalMargins = visibleRows * 10;
+    const viewWidth = clientWidth - sideMargins;
+    const viewHeight = clientHeight - topBottomPadding - verticalMargins;
+    const initialWidth = viewWidth / columns;
+    const aspectRatioHeight = initialWidth / BUBBLE_ASPECT_RATIO;
+    const height = Math.floor(Math.min(aspectRatioHeight, viewHeight / visibleRows));
+    const width = Math.floor(BUBBLE_ASPECT_RATIO * height);
 
     return {
         height,

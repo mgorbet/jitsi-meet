@@ -7,6 +7,7 @@ import {
 } from '../base/participants';
 import { StateListenerRegistry } from '../base/redux';
 import { shouldDisplayTileView } from '../video-layout/functions';
+import { shouldDisplayBubbleView } from '../video-layout/functions';
 
 import { FOLLOW_ME_COMMAND } from './constants';
 
@@ -60,6 +61,14 @@ StateListenerRegistry.register(
     /* listener */ _sendFollowMeCommand);
 
 /**
+ * Subscribes to changes to the bubble view setting in the user interface of the
+ * local participant.
+ */
+StateListenerRegistry.register(
+    /* selector */ state => state['features/video-layout'].bubbleViewEnabled,
+    /* listener */ _sendFollowMeCommand);
+
+/**
  * Private selector for returning state from redux that should be respected by
  * other participants while follow me is enabled.
  *
@@ -73,7 +82,8 @@ function _getFollowMeState(state) {
         filmstripVisible: state['features/filmstrip'].visible,
         nextOnStage: pinnedParticipant && pinnedParticipant.id,
         sharedDocumentVisible: state['features/etherpad'].editing,
-        tileViewEnabled: shouldDisplayTileView(state)
+        tileViewEnabled: shouldDisplayTileView(state),
+        bubbleViewEnabled: shouldDisplayBubbleView(state)
     };
 }
 

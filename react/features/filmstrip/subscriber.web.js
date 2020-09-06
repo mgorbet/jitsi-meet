@@ -3,12 +3,12 @@
 import Filmstrip from '../../../modules/UI/videolayout/Filmstrip';
 import VideoLayout from '../../../modules/UI/videolayout/VideoLayout';
 import { StateListenerRegistry, equals } from '../base/redux';
-import { getCurrentLayout, getTileViewGridDimensions, shouldDisplayTileView, LAYOUTS } from '../video-layout';
+import { getCurrentLayout, getTileViewGridDimensions, getBubbleViewGridDimensions, shouldDisplayTileView, shouldDisplayBubbleView, LAYOUTS } from '../video-layout';
 
-import { setHorizontalViewDimensions, setTileViewDimensions } from './actions.web';
+import { setHorizontalViewDimensions, setTileViewDimensions , setBubbleViewDimensions} from './actions.web';
 
 /**
- * Listens for changes in the number of participants to calculate the dimensions of the tile view grid and the tiles.
+ * Listens for changes in the number of participants to calculate the dimensions of the tile view grid and the tiles, or the bubble view layout and bubble dimensions
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/participants'].length,
@@ -34,10 +34,32 @@ StateListenerRegistry.register(
                 );
             }
         }
+
+        if (shouldDisplayBubbleView(state)) {
+            const gridDimensions = getBubbleViewGridDimensions(state);
+            const oldGridDimensions = state['features/filmstrip'].bubbleViewDimensions.gridDimensions;
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+            const { isOpen } = state['features/chat'];
+
+            if (!equals(gridDimensions, oldGridDimensions)) {
+                store.dispatch(
+                    setBubbleViewDimensions(
+                        gridDimensions,
+                        {
+                            clientHeight,
+                            clientWidth
+                        },
+                        isOpen
+                    )
+                );
+            }
+        }
+
     });
 
+
 /**
- * Listens for changes in the selected layout to calculate the dimensions of the tile view grid and horizontal view.
+ * Listens for changes in the selected layout to calculate the dimensions of the tile view grid or bubble view and horizontal view.
  */
 StateListenerRegistry.register(
     /* selector */ state => getCurrentLayout(state),
@@ -52,6 +74,22 @@ StateListenerRegistry.register(
             store.dispatch(
                 setTileViewDimensions(
                     getTileViewGridDimensions(state),
+                    {
+                        clientHeight,
+                        clientWidth
+                    },
+                    isOpen
+                )
+            );
+            break;
+        }
+        case LAYOUTS.BUBBLE_VIEW: {
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+            const { isOpen } = state['features/chat'];
+
+            store.dispatch(
+                setBubbleViewDimensions(
+                    getBubbleViewGridDimensions(state),
                     {
                         clientHeight,
                         clientWidth
@@ -91,7 +129,7 @@ StateListenerRegistry.register(
 );
 
 /**
- * Listens for changes in the chat state to calculate the dimensions of the tile view grid and the tiles.
+ * Listens for changes in the chat state to calculate the dimensions of the tile view grid and the tiles, or the bubble view layout and bubble dimensions.
  */
 StateListenerRegistry.register(
     /* selector */ state => state['features/chat'].isOpen,
@@ -112,6 +150,22 @@ StateListenerRegistry.register(
 
             store.dispatch(
                 setTileViewDimensions(
+                    gridDimensions,
+                    {
+                        clientHeight,
+                        clientWidth
+                    },
+                    isChatOpen
+                )
+            );
+        }
+
+        if (shouldDisplayBubbleView(state)) {
+            const gridDimensions = getBubbleViewGridDimensions(state);
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+
+            store.dispatch(
+                setBubbleViewDimensions(
                     gridDimensions,
                     {
                         clientHeight,

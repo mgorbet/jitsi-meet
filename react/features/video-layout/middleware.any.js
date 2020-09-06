@@ -7,13 +7,15 @@ import { SET_DOCUMENT_EDITING_STATUS } from '../etherpad';
 
 import { SET_TILE_VIEW } from './actionTypes';
 import { setTileView } from './actions';
+import { SET_BUBBLE_VIEW } from './actionTypes';
+import { setBubbleView } from './actions';
 
 import './subscriber';
 
 let previousTileViewEnabled;
-
+let previousBubbleViewEnabled;
 /**
- * Middleware which intercepts actions and updates tile view related state.
+ * Middleware which intercepts actions and updates tile view and button view related state.
  *
  * @param {Store} store - The redux store.
  * @returns {Function}
@@ -30,16 +32,20 @@ MiddlewareRegistry.register(store => next => action => {
 
         if (pinnedParticipant) {
             _storeTileViewStateAndClear(store);
+            _storeBubbleViewStateAndClear(store);
         } else {
             _restoreTileViewState(store);
+            _restoreBubbleViewState(store);
         }
         break;
     }
     case SET_DOCUMENT_EDITING_STATUS:
         if (action.editing) {
             _storeTileViewStateAndClear(store);
+            _storeBubbleViewStateAndClear(store);
         } else {
             _restoreTileViewState(store);
+            _restoreBubbleViewState(store);
         }
         break;
 
@@ -48,8 +54,13 @@ MiddlewareRegistry.register(store => next => action => {
         if (action.enabled && getPinnedParticipant(store)) {
             store.dispatch(pinParticipant(null));
         }
+    
+    // same for bubble view?  maybe more exponential, b/c need to trade off Tile view also; revisit this -mgg    
+    case SET_BUBBLE_VIEW:
+        if (action.enabled && getPinnedParticipant(store)) {
+            store.dispatch(pinParticipant(null));
+        }
     }
-
 
     return result;
 });
@@ -65,11 +76,12 @@ StateListenerRegistry.register(
             // conference changed, left or failed...
             // Clear tile view state.
             dispatch(setTileView());
+            dispatch(setBubbleView());
         }
     });
 
 /**
- * Respores tile view state, if it wasn't updated since then.
+ * Restores tile view state, if it wasn't updated since then.
  *
  * @param {Object} store - The Redux Store.
  * @returns {void}
@@ -96,5 +108,36 @@ function _storeTileViewStateAndClear({ dispatch, getState }) {
     if (tileViewEnabled !== undefined) {
         previousTileViewEnabled = tileViewEnabled;
         dispatch(setTileView(undefined));
+    }
+}
+
+/**
+ * Restores bubble view state, if it wasn't updated since then.
+ *
+ * @param {Object} store - The Redux Store.
+ * @returns {void}
+ */
+function _restoreBubbleViewState({ dispatch, getState }) {
+    const { bubbleViewEnabled } = getState()['features/video-layout'];
+
+    if (bubbleViewEnabled === undefined && previousBubbleViewEnabled !== undefined) {
+        dispatch(setBubbleView(previousBubbleViewEnabled));
+    }
+
+    previousBubbleViewEnabled = undefined;
+}
+
+/**
+ * Stores the current bubble view state and clears it.
+ *
+ * @param {Object} store - The Redux Store.
+ * @returns {void}
+ */
+function _storeBubbleViewStateAndClear({ dispatch, getState }) {
+    const { bubbleViewEnabled } = getState()['features/video-layout'];
+
+    if (bubbleViewEnabled !== undefined) {
+        previousBubbleViewEnabled = bubbleViewEnabled;
+        dispatch(setBubbleView(undefined));
     }
 }

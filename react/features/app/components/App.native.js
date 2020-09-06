@@ -123,6 +123,7 @@ export class App extends AbstractApp {
      * @override
      */
     _createMainElement(component, props) {
+
         return (
             <DimensionsDetector
                 onDimensionsChanged = { this._onDimensionsChanged }>

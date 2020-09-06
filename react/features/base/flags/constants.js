@@ -107,6 +107,12 @@ export const SERVER_URL_CHANGE_ENABLED = 'server-url-change.enabled';
 export const TILE_VIEW_ENABLED = 'tile-view.enabled';
 
 /**
+ * Flag indicating if bubble view feature should be enabled.
+ * Default: enabled.
+ */
+export const BUBBLE_VIEW_ENABLED = 'bubble-view.enabled';
+
+/**
  * Flag indicating if the toolbox should be always be visible
  * Default: disabled (false).
  */

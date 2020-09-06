@@ -62,7 +62,10 @@ import {
 import {
     TileViewButton,
     shouldDisplayTileView,
-    toggleTileView
+    toggleTileView,
+    BubbleViewButton,
+    shouldDisplayBubbleView,
+    toggleBubbleView
 } from '../../../video-layout';
 import {
     OverflowMenuVideoQualityItem,
@@ -130,6 +133,11 @@ type Props = {
      * Whether or not the tile view is enabled.
      */
     _tileViewEnabled: boolean,
+
+    /**
+     * Whether or not the bubble view is enabled.
+     */
+    _bubbleViewEnabled: boolean,
 
     /**
      * Whether or not the current user is logged in through a JWT.
@@ -251,6 +259,7 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
+        this._onShortcutToggleBubbleView = this._onShortcutToggleBubbleView.bind(this);
 
         this.state = {
             windowWidth: window.innerWidth
@@ -294,6 +303,11 @@ class Toolbox extends Component<Props, State> {
                 character: 'W',
                 exec: this._onShortcutToggleTileView,
                 helpDescription: 'toolbar.tileViewToggle'
+            },
+            this._shouldShowButton('bubbleview') && {
+                character: 'B',
+                exec: this._onShortcutToggleBubbleView,
+                helpDescription: 'toolbar.bubbleViewToggle'
             }
         ];
 
@@ -519,6 +533,16 @@ class Toolbox extends Component<Props, State> {
         this.props.dispatch(toggleTileView());
     }
 
+    /**
+     * Dispaches an action to toggle bubble view.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleBubbleView() {
+        this.props.dispatch(toggleBubbleView());
+    }
+
     _onMouseOut: () => void;
 
     /**
@@ -630,6 +654,24 @@ class Toolbox extends Component<Props, State> {
             }));
 
         this._doToggleTileView();
+    }
+
+    _onShortcutToggleBubbleView: () => void;
+
+    /**
+     * Dispatches an action for toggling the bubble view.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleBubbleView() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.bubbleview',
+            {
+                enable: !this.props._bubbleViewEnabled
+            }));
+
+        this._doToggleBubbleView();
     }
 
     _onShortcutToggleFullScreen: () => void;
@@ -1150,7 +1192,9 @@ class Toolbox extends Component<Props, State> {
                         text = { t('toolbar.invite') } />
                 );
             case 'tileview':
-                return <TileViewButton showLabel = { true } />;
+            return <TileViewButton showLabel = { true } />;
+            case 'bubbleview':
+                return <BubbleViewButton showLabel = { true } />;
             case 'localrecording':
                 return (
                     <OverflowMenuItem
@@ -1262,6 +1306,9 @@ class Toolbox extends Component<Props, State> {
         if (this._shouldShowButton('tileview')) {
             buttonsRight.push('tileview');
         }
+        if (this._shouldShowButton('bubbleview')) {
+            buttonsRight.push('bubbleview');
+        }
         if (this._shouldShowButton('localrecording')) {
             buttonsRight.push('localrecording');
         }
@@ -1340,6 +1387,8 @@ class Toolbox extends Component<Props, State> {
                     }
                     { buttonsRight.indexOf('tileview') !== -1
                         && <TileViewButton /> }
+                    { buttonsRight.indexOf('bubbleview') !== -1
+                        && <BubbleViewButton /> }
                     { buttonsRight.indexOf('invite') !== -1
                         && <ToolbarButton
                             accessibilityLabel =
@@ -1435,6 +1484,7 @@ function _mapStateToProps(state) {
         _isGuest: state['features/base/jwt'].isGuest,
         _fullScreen: fullScreen,
         _tileViewEnabled: shouldDisplayTileView(state),
+        _bubbleViewEnabled: shouldDisplayBubbleView(state),
         _localParticipantID: localParticipant.id,
         _localRecState: localRecordingStates,
         _locked: locked,

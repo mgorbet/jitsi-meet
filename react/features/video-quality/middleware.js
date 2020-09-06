@@ -9,6 +9,7 @@ import {
 import { getParticipantCount } from '../base/participants';
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 import { shouldDisplayTileView } from '../video-layout';
+import { shouldDisplayBubbleView } from '../video-layout';
 
 import { getReceiverVideoQualityLevel } from './functions';
 import logger from './logger';
@@ -47,17 +48,19 @@ StateListenerRegistry.register(
     /* selector */ state => {
         const { reducedUI } = state['features/base/responsive-ui'];
         const _shouldDisplayTileView = shouldDisplayTileView(state);
+        const _shouldDisplayBubbleView = shouldDisplayBubbleView(state);
         const thumbnailSize = state['features/filmstrip']?.tileViewDimensions?.thumbnailSize;
         const participantCount = getParticipantCount(state);
 
         return {
             displayTileView: _shouldDisplayTileView,
+            displayBubbleView: _shouldDisplayBubbleView,
             participantCount,
             reducedUI,
             thumbnailHeight: thumbnailSize?.height
         };
     },
-    /* listener */ ({ displayTileView, participantCount, reducedUI, thumbnailHeight }, { dispatch, getState }) => {
+    /* listener */ ({ displayTileView, displayBubbleView, participantCount, reducedUI, thumbnailHeight }, { dispatch, getState }) => {
         const state = getState();
         const { maxReceiverVideoQuality } = state['features/base/conference'];
         const { maxFullResolutionParticipants = 2 } = state['features/base/config'];
@@ -66,7 +69,7 @@ StateListenerRegistry.register(
 
         if (reducedUI) {
             newMaxRecvVideoQuality = VIDEO_QUALITY_LEVELS.LOW;
-        } else if (displayTileView && !Number.isNaN(thumbnailHeight)) {
+        } else if ((displayTileView || displayBubbleView) && !Number.isNaN(thumbnailHeight)) {
             newMaxRecvVideoQuality = getReceiverVideoQualityLevel(thumbnailHeight, getMinHeightForQualityLvlMap(state));
 
             // Override HD level calculated for the thumbnail height when # of participants threshold is exceeded

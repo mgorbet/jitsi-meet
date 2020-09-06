@@ -61,7 +61,7 @@ export default class SharedVideoThumb extends SmallVideo {
         const remoteVideosContainer
             = document.getElementById('filmstripRemoteVideosContainer');
         const localVideoContainer
-            = document.getElementById('localVideoTileViewContainer');
+            = document.getElementById('localVideoTileViewContainer');        // manage bubble view here?
 
         remoteVideosContainer.insertBefore(container, localVideoContainer);
 

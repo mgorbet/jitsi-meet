@@ -6,6 +6,7 @@ import { pinParticipant } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { shouldDisplayTileView } from '../../../video-layout/functions';
+import { shouldDisplayBubbleView } from '../../../video-layout/functions';
 
 export type Props = AbstractButtonProps & {
 
@@ -13,6 +14,11 @@ export type Props = AbstractButtonProps & {
      * True if tile view is currently enabled.
      */
     _tileViewEnabled: boolean,
+
+    /**
+     * True if bubble view is currently enabled.
+     */
+    _bubbleViewEnabled: boolean,
 
     /**
      * The redux {@code dispatch} function.
@@ -31,7 +37,7 @@ export type Props = AbstractButtonProps & {
 };
 
 /**
- * A remote video menu button which pins a participant and exist the tile view.
+ * A remote video menu button which pins a participant and exits the tile view.
  */
 class PinButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.show';
@@ -60,7 +66,7 @@ class PinButton extends AbstractButton<Props, *> {
  */
 function _mapStateToProps(state) {
     return {
-        visible: shouldDisplayTileView(state)
+        visible: ( shouldDisplayTileView(state) || shouldDisplayBubbleView(state) )
     };
 }
 

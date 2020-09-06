@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import { NotificationsContainer } from '../../notifications/components';
 import { shouldDisplayTileView } from '../../video-layout';
+import { shouldDisplayBubbleView } from '../../video-layout';
 import { shouldDisplayNotifications } from '../functions';
 
 /**
@@ -33,7 +34,15 @@ export type AbstractProps = {
      * @protected
      * @type {boolean}
      */
-    _shouldDisplayTileView: boolean
+    _shouldDisplayTileView: boolean,
+
+    /**
+     * Whether or not the layout should change to support bubble view mode.
+     *
+     * @protected
+     * @type {boolean}
+     */
+    _shouldDisplayBubbleView: boolean
 };
 
 /**
@@ -76,6 +85,7 @@ export function abstractMapStateToProps(state: Object) {
     return {
         _notificationsVisible: shouldDisplayNotifications(state),
         _room: state['features/base/conference'].room,
-        _shouldDisplayTileView: shouldDisplayTileView(state)
+        _shouldDisplayTileView: shouldDisplayTileView(state),
+        _shouldDisplayBubbleView: shouldDisplayBubbleView(state)
     };
 }

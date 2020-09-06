@@ -4,7 +4,8 @@ import { ReducerRegistry } from '../base/redux';
 
 import {
     SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
+    SET_TILE_VIEW,
+    SET_BUBBLE_VIEW
 } from './actionTypes';
 
 const DEFAULT_STATE = {
@@ -20,7 +21,8 @@ const DEFAULT_STATE = {
      * @public
      * @type {boolean}
      */
-    tileViewEnabled: undefined
+    tileViewEnabled: undefined,
+    bubbleViewEnabled: undefined
 };
 
 const STORE_NAME = 'features/video-layout';
@@ -38,6 +40,12 @@ ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
         return {
             ...state,
             tileViewEnabled: action.enabled
+        };
+
+    case SET_BUBBLE_VIEW:
+        return {
+            ...state,
+            bubbleViewEnabled: action.enabled
         };
     }
 

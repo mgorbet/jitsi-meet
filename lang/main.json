@@ -728,6 +728,7 @@
             "show": "Show on stage",
             "speakerStats": "Toggle speaker statistics",
             "tileView": "Toggle tile view",
+            "bubbleView": "Toggle bubble view",
             "toggleCamera": "Toggle camera",
             "toggleFilmstrip": "Toggle filmstrip",
             "videomute": "Toggle mute video",
@@ -748,8 +749,10 @@
         "embedMeeting": "Embed meeting",
         "enterFullScreen": "View full screen",
         "enterTileView": "Enter tile view",
+        "enterBubbleView": "Enter bubble view",
         "exitFullScreen": "Exit full screen",
         "exitTileView": "Exit tile view",
+        "exitBubbleView": "Exit bubble view",
         "feedback": "Leave feedback",
         "hangup": "Leave",
         "help": "Help",
@@ -789,6 +792,7 @@
         "stopSharedVideo": "Stop YouTube video",
         "talkWhileMutedPopup": "Trying to speak? You are muted.",
         "tileViewToggle": "Toggle tile view",
+        "bubbleViewToggle": "Toggle bubble view",
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
         "startvideoblur": "Blur my background",
@@ -864,7 +868,7 @@
             "join": "Tap to join",
             "roomname": "Enter room name"
         },
-        "appDescription": "Go ahead, video chat with the whole team. In fact, invite everyone you know. {{app}} is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.",
+        "appDescription": "Go ahead, video chat with the whole team (actually, just for testing!). In fact, invite everyone you know. {{app}} is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.",
         "audioVideoSwitch": {
             "audio": "Voice",
             "video": "Video"

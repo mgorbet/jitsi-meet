@@ -241,7 +241,7 @@ class Conference extends AbstractConference<Props, *> {
         } = this.props;
         const showGradient = _toolboxVisible;
         const applyGradientStretching
-            = _filmstripVisible && _aspectRatio === ASPECT_RATIO_NARROW && !_shouldDisplayTileView;
+            = _filmstripVisible && _aspectRatio === ASPECT_RATIO_NARROW && !_shouldDisplayTileView && !_shouldDisplayBubbleView;
 
         if (_reducedUI) {
             return this._renderContentForReducedUi();
@@ -252,9 +252,17 @@ class Conference extends AbstractConference<Props, *> {
                 {/*
                   * The LargeVideo is the lowermost stacking layer.
                   */
-                    _shouldDisplayTileView
-                        ? <TileView onClick = { this._onClick } />
-                        : <LargeVideo onClick = { this._onClick } />
+                 _shouldDisplayTileView
+                 ? <TileView onClick = { this._onClick } />
+                 : <LargeVideo onClick = { this._onClick } />
+                }
+
+                {/*
+                  * The LargeVideo is the lowermost stacking layer.
+                  */
+                 _shouldDisplayBubbleView
+                 ? <BubbleView onClick = { this._onClick } />
+                 : <LargeVideo onClick = { this._onClick } />
                 }
 
                 {/*
@@ -316,7 +324,12 @@ class Conference extends AbstractConference<Props, *> {
                       * React Components depict the videos of the conference's
                       * participants.
                       */
-                        _shouldDisplayTileView ? undefined : <Filmstrip />
+                     _shouldDisplayTileView ? undefined : <Filmstrip />
+                    }
+
+                    {/*
+                      */
+                     _shouldDisplayBubbleView ? undefined : <Filmstrip />
                     }
                 </SafeAreaView>
 

@@ -26,6 +26,7 @@ import { RECORDING_TYPES } from '../../react/features/recording/constants';
 import { getActiveSession } from '../../react/features/recording/functions';
 import { muteAllParticipants } from '../../react/features/remote-video-menu/actions';
 import { toggleTileView } from '../../react/features/video-layout';
+import { toggleBubbleView } from '../../react/features/video-layout';
 import { setVideoQuality } from '../../react/features/video-quality';
 import { getJitsiMeetTransport } from '../transport';
 
@@ -167,6 +168,11 @@ function initCommands() {
             sendAnalytics(createApiEvent('tile-view.toggled'));
 
             APP.store.dispatch(toggleTileView());
+        },
+        'toggle-bubble-view': () => {
+            sendAnalytics(createApiEvent('bubble-view.toggled'));
+
+            APP.store.dispatch(toggleBubbleView());
         },
         'video-hangup': (showFeedbackDialog = true) => {
             sendAnalytics(createApiEvent('video.hangup'));
@@ -959,6 +965,22 @@ class API {
     notifyTileViewChanged(enabled: boolean) {
         this._sendEvent({
             name: 'tile-view-changed',
+            enabled
+        });
+    }
+
+
+    /**
+     * Notify external application (if API is enabled) that bubble view has been
+     * entered or exited.
+     *
+     * @param {string} enabled - True if bubble view is currently displayed, false
+     * otherwise.
+     * @returns {void}
+     */
+    notifyBubbleViewChanged(enabled: boolean) {
+        this._sendEvent({
+            name: 'bubble-view-changed',
             enabled
         });
     }

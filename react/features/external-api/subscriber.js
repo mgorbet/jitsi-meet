@@ -6,6 +6,7 @@ import { StateListenerRegistry } from '../base/redux';
 import { getTrackByMediaTypeAndParticipant } from '../base/tracks';
 import { appendSuffix } from '../display-name';
 import { shouldDisplayTileView } from '../video-layout';
+import { shouldDisplayBubbleView } from '../video-layout';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -18,6 +19,12 @@ StateListenerRegistry.register(
     /* selector */ state => shouldDisplayTileView(state),
     /* listener */ displayTileView => {
         APP.API.notifyTileViewChanged(displayTileView);
+    });
+
+StateListenerRegistry.register(
+    /* selector */ state => shouldDisplayBubbleView(state),
+    /* listener */ displayBubbleView => {
+        APP.API.notifyBubbleViewChanged(displayBubbleView);
     });
 
 StateListenerRegistry.register(

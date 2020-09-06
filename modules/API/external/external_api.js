@@ -47,6 +47,7 @@ const commands = {
     toggleFilmStrip: 'toggle-film-strip',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
+    toggleBubbleView: 'toggle-bubble-view',
     toggleVideo: 'toggle-video'
 };
 
@@ -84,7 +85,8 @@ const events = {
     'dominant-speaker-changed': 'dominantSpeakerChanged',
     'subject-change': 'subjectChange',
     'suspend-detected': 'suspendDetected',
-    'tile-view-changed': 'tileViewChanged'
+    'tile-view-changed': 'tileViewChanged',
+    'bubble-view-changed': 'bubbleViewChanged'
 };
 
 /**

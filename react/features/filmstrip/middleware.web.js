@@ -6,11 +6,12 @@ import { CLIENT_RESIZED } from '../base/responsive-ui';
 import {
     getCurrentLayout,
     LAYOUTS,
-    shouldDisplayTileView
+    shouldDisplayTileView,
+    shouldDisplayBubbleView
 } from '../video-layout';
 
-import { SET_HORIZONTAL_VIEW_DIMENSIONS, SET_TILE_VIEW_DIMENSIONS } from './actionTypes';
-import { setHorizontalViewDimensions, setTileViewDimensions } from './actions.web';
+import { SET_HORIZONTAL_VIEW_DIMENSIONS, SET_TILE_VIEW_DIMENSIONS, SET_BUBBLE_VIEW_DIMENSIONS } from './actionTypes';
+import { setHorizontalViewDimensions, setTileViewDimensions, setBubbleViewDimensions } from './actions.web';
 
 import './subscriber.web';
 
@@ -43,6 +44,23 @@ MiddlewareRegistry.register(store => next => action => {
             );
             break;
         }
+        case LAYOUTS.BUBBLE_VIEW: {
+            const { gridDimensions } = state['features/filmstrip'].bubbleViewDimensions;
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+            const { isOpen } = state['features/chat'];
+
+            store.dispatch(
+                setBubbleViewDimensions(
+                    gridDimensions,
+                    {
+                        clientHeight,
+                        clientWidth
+                    },
+                    isOpen
+                )
+            );
+            break;
+        }
         case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
             store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
             break;
@@ -57,6 +75,17 @@ MiddlewareRegistry.register(store => next => action => {
 
             // Once the thumbnails are reactified this should be moved there too.
             Filmstrip.resizeThumbnailsForTileView(width, height, true);
+        }
+        break;
+    }
+    case SET_BUBBLE_VIEW_DIMENSIONS: {
+        const state = store.getState();
+
+        if (shouldDisplayBubbleView(state)) {
+            const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
+
+            // Once the thumbnails are reactified this should be moved there too.
+            Filmstrip.resizeThumbnailsForBubbleView(width, height, true);
         }
         break;
     }

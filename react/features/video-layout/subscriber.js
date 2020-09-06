@@ -20,10 +20,18 @@ StateListenerRegistry.register(
     /* selector */ state => state['features/video-layout'].tileViewEnabled,
     /* listener */ (tileViewEnabled, store) => {
         const { dispatch } = store;
-
         dispatch(selectParticipant());
     }
 );
+
+StateListenerRegistry.register(
+    /* selector */ state => state['features/video-layout'].bubbleViewEnabled,
+    /* listener */ (bubbleViewEnabled, store) => {
+        const { dispatch } = store;
+        dispatch(selectParticipant());
+    }
+);
+
 
 /**
  * For auto-pin mode, listen for changes to the known media tracks and look

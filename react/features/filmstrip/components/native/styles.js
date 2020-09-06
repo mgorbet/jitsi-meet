@@ -134,6 +134,19 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center'
     }
+
+    bubbleView: {
+        alignSelf: 'center'
+    },
+
+    bubbleViewRows: {
+        justifyContent: 'center'
+    },
+
+    bubbleViewRow: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    }
 };
 
 /**

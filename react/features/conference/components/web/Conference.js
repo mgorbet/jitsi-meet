@@ -146,6 +146,11 @@ class Conference extends AbstractConference<Props, *> {
             return;
         }
 
+        if (this.props._shouldDisplayBubbleView
+            === prevProps._shouldDisplayBubbleView) {
+            return;
+        }
+
         // TODO: For now VideoLayout is being called as LargeVideo and Filmstrip
         // sizing logic is still handled outside of React. Once all components
         // are in react they should calculate size on their own as much as

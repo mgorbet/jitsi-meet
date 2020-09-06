@@ -10,6 +10,7 @@ import {
 import { MiddlewareRegistry } from '../base/redux';
 import { setFilmstripVisible } from '../filmstrip';
 import { setTileView } from '../video-layout';
+import { setBubbleView } from '../video-layout';
 
 import {
     setFollowMeModerator,
@@ -137,6 +138,10 @@ function _onFollowMeCommand(attributes = {}, id, store) {
 
     if (oldState.tileViewEnabled !== attributes.tileViewEnabled) {
         store.dispatch(setTileView(attributes.tileViewEnabled === 'true'));
+    }
+
+    if (oldState.bubbleViewEnabled !== attributes.bubbleViewEnabled) {
+        store.dispatch(setBubbleView(attributes.bubbleViewEnabled === 'true'));
     }
 
     // For now gate etherpad checks behind a web-app check to be extra safe

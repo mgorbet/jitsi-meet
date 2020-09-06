@@ -7,7 +7,8 @@ import {
     SET_FILMSTRIP_HOVERED,
     SET_FILMSTRIP_VISIBLE,
     SET_HORIZONTAL_VIEW_DIMENSIONS,
-    SET_TILE_VIEW_DIMENSIONS
+    SET_TILE_VIEW_DIMENSIONS,
+    SET_BUBBLE_VIEW_DIMENSIONS
 } from './actionTypes';
 
 const DEFAULT_STATE = {
@@ -34,6 +35,14 @@ const DEFAULT_STATE = {
      * @type {Object}
      */
     tileViewDimensions: {},
+
+    /**
+     * The bubble view dimensions.
+     *
+     * @public
+     * @type {Object}
+     */
+    bubbleViewDimensions: {},
 
     /**
      * The indicator which determines whether the {@link Filmstrip} is visible.
@@ -83,6 +92,11 @@ ReducerRegistry.register(
             return {
                 ...state,
                 tileViewDimensions: action.dimensions
+            };
+        case SET_BUBBLE_VIEW_DIMENSIONS:
+            return {
+                ...state,
+                bubbleViewDimensions: action.dimensions
             };
         }
 

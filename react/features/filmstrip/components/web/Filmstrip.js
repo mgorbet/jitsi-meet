@@ -38,7 +38,7 @@ type Props = {
     _currentLayout: string,
 
     /**
-     * The number of columns in tile view.
+     * The number of columns in tile view / bubble view.
      */
     _columns: number,
 
@@ -69,7 +69,7 @@ type Props = {
     _hovered: boolean,
 
     /**
-     * The number of rows in tile view.
+     * The number of rows in tile view / bubble view.
      */
     _rows: number,
 
@@ -196,6 +196,17 @@ class Filmstrip extends Component <Props> {
             filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
             break;
         }
+        case LAYOUTS.BUBBLE_VIEW: {
+            // The size of the side margins for each bubble as set in CSS.
+            const { _columns, _rows, _filmstripWidth } = this.props;
+
+            if (_rows > _columns) {
+                remoteVideoContainerClassName += ' has-overflow';
+            }
+
+            filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
+            break;
+        }
         }
 
         let remoteVideosWrapperClassName = 'filmstrip__videos';
@@ -239,7 +250,8 @@ class Filmstrip extends Component <Props> {
                             onMouseOut = { this._onMouseOut }
                             onMouseOver = { this._onMouseOver }
                             style = { filmstripRemoteVideosContainerStyle }>
-                            <div id = 'localVideoTileViewContainer' />
+                            <div id = 'localVideoTileViewContainer' />                            
+                            <div id = 'localVideoBubbleViewContainer' />
                         </div>
                     </div>
                 </div>
@@ -378,7 +390,7 @@ function _mapStateToProps(state) {
     const videosClassName = `filmstrip__videos${
         isFilmstripOnly ? ' filmstrip__videos-filmstripOnly' : ''}${
         visible ? '' : ' hidden'}`;
-    const { gridDimensions = {}, filmstripWidth } = state['features/filmstrip'].tileViewDimensions;
+        const { gridDimensions = {}, filmstripWidth } = state['features/filmstrip'].tileViewDimensions;    
 
     return {
         _className: className,

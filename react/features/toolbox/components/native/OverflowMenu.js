@@ -17,6 +17,7 @@ import { LiveStreamButton, RecordButton } from '../../../recording';
 import { RoomLockButton } from '../../../room-lock';
 import { ClosedCaptionButton } from '../../../subtitles';
 import { TileViewButton } from '../../../video-layout';
+import { BubbleViewButton } from '../../../video-layout';
 import { VideoShareButton } from '../../../youtube-player/components';
 import HelpButton from '../HelpButton';
 
@@ -135,6 +136,7 @@ class OverflowMenu extends PureComponent<Props, State> {
                 <Collapsible collapsed = { !showMore }>
                     <ToggleCameraButton { ...buttonProps } />
                     <TileViewButton { ...buttonProps } />
+                    <BubbleViewButton { ...buttonProps } />
                     <RecordButton { ...buttonProps } />
                     <LiveStreamButton { ...buttonProps } />
                     <VideoShareButton { ...buttonProps } />

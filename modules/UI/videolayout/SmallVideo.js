@@ -27,7 +27,8 @@ import {
     LAYOUTS,
     getCurrentLayout,
     setTileView,
-    shouldDisplayTileView
+    shouldDisplayTileView,
+    shouldDisplayBubbleView
 } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
 
@@ -451,7 +452,7 @@ export default class SmallVideo {
      */
     selectDisplayMode(input) {
         // Display name is always and only displayed when user is on the stage
-        if (input.isCurrentlyOnLargeVideo && !input.tileViewActive) {
+        if (input.isCurrentlyOnLargeVideo && !input.tileViewActive && !input.bubbleViewActive) {
             return input.isVideoPlayable && !input.isAudioOnly ? DISPLAY_BLACKNESS_WITH_NAME : DISPLAY_AVATAR_WITH_NAME;
         } else if (input.isVideoPlayable && input.hasVideo && !input.isAudioOnly) {
             // check hovering and change state to video with name
@@ -473,6 +474,7 @@ export default class SmallVideo {
             isHovered: this._isHovered(),
             isAudioOnly: APP.conference.isAudioOnly(),
             tileViewActive: shouldDisplayTileView(APP.store.getState()),
+            bubbleViewActive: shouldDisplayBubbleView(APP.store.getState()),
             isVideoPlayable: this.isVideoPlayable(),
             hasVideo: Boolean(this.selectVideoElement().length),
             connectionStatus: APP.conference.getParticipantConnectionStatus(this.id),
@@ -869,6 +871,27 @@ export default class SmallVideo {
         case LAYOUTS.TILE_VIEW: {
             const state = APP.store.getState();
             const { thumbnailSize } = state['features/filmstrip'].tileViewDimensions;
+
+            if (typeof thumbnailSize !== 'undefined') {
+                const { height, width } = thumbnailSize;
+                const avatarSize = height / 2;
+
+                this.$container.css({
+                    height: `${height}px`,
+                    'min-height': `${height}px`,
+                    'min-width': `${width}px`,
+                    width: `${width}px`
+                });
+                this.$avatar().css({
+                    height: `${avatarSize}px`,
+                    width: `${avatarSize}px`
+                });
+            }
+            break;
+        }
+        case LAYOUTS.BUBBLE_VIEW: {
+            const state = APP.store.getState();
+            const { thumbnailSize } = state['features/filmstrip'].bubbleViewDimensions;
 
             if (typeof thumbnailSize !== 'undefined') {
                 const { height, width } = thumbnailSize;

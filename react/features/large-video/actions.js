@@ -11,6 +11,7 @@ import { MEDIA_TYPE } from '../base/media';
 import { getParticipants } from '../base/participants';
 import { reportError } from '../base/util';
 import { shouldDisplayTileView } from '../video-layout';
+import { shouldDisplayBubbleView } from '../video-layout';
 
 import {
     SELECT_LARGE_VIDEO_PARTICIPANT,
@@ -30,7 +31,7 @@ export function selectParticipant() {
         const { conference } = state['features/base/conference'];
 
         if (conference) {
-            const ids = shouldDisplayTileView(state)
+            const ids = ( shouldDisplayTileView(state) || shouldDisplayBubbleView(state) )
                 ? getParticipants(state).map(participant => participant.id)
                 : [ state['features/large-video'].participantId ];
 

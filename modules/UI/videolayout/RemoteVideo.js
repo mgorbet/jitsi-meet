@@ -53,6 +53,7 @@ function createContainer(spanId) {
         = document.getElementById('filmstripRemoteVideosContainer');
     const localVideoContainer
         = document.getElementById('localVideoTileViewContainer');
+    
 
     remoteVideosContainer.insertBefore(container, localVideoContainer);
 

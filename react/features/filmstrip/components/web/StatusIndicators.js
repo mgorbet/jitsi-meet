@@ -68,6 +68,9 @@ class StatusIndicators extends Component<Props> {
         case LAYOUTS.TILE_VIEW:
             tooltipPosition = 'right';
             break;
+        case LAYOUTS.BUBBLE_VIEW:
+            tooltipPosition = 'right';
+            break;
         case LAYOUTS.VERTICAL_FILMSTRIP_VIEW:
             tooltipPosition = 'left';
             break;

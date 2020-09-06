@@ -32,7 +32,7 @@ type Props = AbstractButtonProps & {
 };
 
 /**
- * Component that renders a toolbar button for toggling the tile layout view.
+ * Component that renders a toolbar button for toggling the video sharing action.
  *
  * @extends AbstractButton
  */

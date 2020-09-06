@@ -4,9 +4,10 @@ import type { Dispatch } from 'redux';
 
 import {
     SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
+    SET_TILE_VIEW,
+    SET_BUBBLE_VIEW
 } from './actionTypes';
-import { shouldDisplayTileView } from './functions';
+import { shouldDisplayTileView, shouldDisplayBubbleView } from './functions';
 
 /**
  * Creates a (redux) action which signals that the list of known participants
@@ -32,13 +33,30 @@ export function setParticipantsWithScreenShare(participantIds: Array<string>) {
  *
  * @param {boolean} enabled - Whether or not tile view should be shown.
  * @returns {{
- *     type: SET_TILE_VIEW,
- *     enabled: ?boolean
- * }}
- */
+    *     type: SET_TILE_VIEW,
+    *     enabled: ?boolean
+    * }}
+    */
 export function setTileView(enabled: ?boolean) {
     return {
         type: SET_TILE_VIEW,
+        enabled
+    };
+}
+
+/**
+ * Creates a (redux) action which signals to set the UI layout to be bubble view
+ * or not.
+ *
+ * @param {boolean} enabled - Whether or not bubble view should be shown.
+ * @returns {{
+    *     type: SET_BUBBLE_VIEW,
+    *     enabled: ?boolean
+    * }}
+    */
+export function setBubbleView(enabled: ?boolean) {
+    return {
+        type: SET_BUBBLE_VIEW,
         enabled
     };
 }
@@ -54,5 +72,19 @@ export function toggleTileView() {
         const tileViewActive = shouldDisplayTileView(getState());
 
         dispatch(setTileView(!tileViewActive));
+    };
+}
+
+/**
+ * Creates a (redux) action which signals either to exit bubble view if currently
+ * enabled or enter bubble view if currently disabled.
+ *
+ * @returns {Function}
+ */
+export function toggleBubbleView() {
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const bubbleViewActive = shouldDisplayBubbleView(getState());
+
+        dispatch(setBubbleView(!bubbleViewActive));
     };
 }
