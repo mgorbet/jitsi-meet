@@ -2,13 +2,14 @@
 
 import { CHAT_SIZE } from '../chat/constants';
 
-import { SET_HORIZONTAL_VIEW_DIMENSIONS, SET_TILE_VIEW_DIMENSIONS } from './actionTypes';
-import { calculateThumbnailSizeForHorizontalView, calculateThumbnailSizeForTileView } from './functions';
+import { SET_HORIZONTAL_VIEW_DIMENSIONS, SET_TILE_VIEW_DIMENSIONS, SET_BUBBLE_VIEW_DIMENSIONS } from './actionTypes';
+import { calculateThumbnailSizeForHorizontalView, calculateThumbnailSizeForTileView, calculateThumbnailSizeForBubbleView } from './functions';
 
 /**
  * The size of the side margins for each tile as set in CSS.
  */
 const TILE_VIEW_SIDE_MARGINS = 10 * 2;
+const BUBBLE_VIEW_SIDE_MARGINS = 10 * 2;
 
 /**
  * Sets the dimensions of the tile view grid.
@@ -18,35 +19,72 @@ const TILE_VIEW_SIDE_MARGINS = 10 * 2;
  * @param {boolean} isChatOpen - Whether the chat panel is displayed, in
  * order to properly compute the tile view size.
  * @returns {{
- *     type: SET_TILE_VIEW_DIMENSIONS,
- *     dimensions: Object
- * }}
- */
-export function setTileViewDimensions(dimensions: Object, windowSize: Object, isChatOpen: boolean) {
-    const { clientWidth, clientHeight } = windowSize;
-    let widthToUse = clientWidth;
+    *     type: SET_TILE_VIEW_DIMENSIONS,
+    *     dimensions: Object
+    * }}
+    */
+   export function setTileViewDimensions(dimensions: Object, windowSize: Object, isChatOpen: boolean) {
+       const { clientWidth, clientHeight } = windowSize;
+       let widthToUse = clientWidth;
+   
+       if (isChatOpen) {
+           widthToUse -= CHAT_SIZE;
+       }
+   
+       const thumbnailSize = calculateThumbnailSizeForTileView({
+           ...dimensions,
+           clientWidth: widthToUse,
+           clientHeight
+       });
+       const filmstripWidth = dimensions.columns * (TILE_VIEW_SIDE_MARGINS + thumbnailSize.width);
+   
+       return {
+           type: SET_TILE_VIEW_DIMENSIONS,
+           dimensions: {
+               gridDimensions: dimensions,
+               thumbnailSize,
+               filmstripWidth
+           }
+       };
+   }
 
-    if (isChatOpen) {
-        widthToUse -= CHAT_SIZE;
-    }
-
-    const thumbnailSize = calculateThumbnailSizeForTileView({
-        ...dimensions,
-        clientWidth: widthToUse,
-        clientHeight
-    });
-    const filmstripWidth = dimensions.columns * (TILE_VIEW_SIDE_MARGINS + thumbnailSize.width);
-
-    return {
-        type: SET_TILE_VIEW_DIMENSIONS,
-        dimensions: {
-            gridDimensions: dimensions,
-            thumbnailSize,
-            filmstripWidth
-        }
-    };
-}
-
+/**
+ * Sets the dimensions of the bubble view 'grid'.
+ *
+ * @param {Object} dimensions - Whether the filmstrip is visible.
+ * @param {Object} windowSize - The size of the window.
+ * @param {boolean} isChatOpen - Whether the chat panel is displayed, in
+ * order to properly compute the tile view size.
+ * @returns {{
+    *     type: SET_BUBBLE_VIEW_DIMENSIONS,
+    *     dimensions: Object
+    * }}
+    */
+   export function setBubbleViewDimensions(dimensions: Object, windowSize: Object, isChatOpen: boolean) {
+       const { clientWidth, clientHeight } = windowSize;
+       let widthToUse = clientWidth;
+   
+       if (isChatOpen) {
+           widthToUse -= CHAT_SIZE;
+       }
+   
+       const thumbnailSize = calculateThumbnailSizeForBubbleView({
+           ...dimensions,
+           clientWidth: widthToUse,
+           clientHeight
+       });
+       const filmstripWidth = dimensions.columns * (BUBBLE_VIEW_SIDE_MARGINS + thumbnailSize.width);
+   
+       return {
+           type: SET_BUBBLE_VIEW_DIMENSIONS,
+           dimensions: {
+               gridDimensions: dimensions,
+               thumbnailSize,
+               filmstripWidth
+           }
+       };
+   }
+      
 /**
  * Sets the dimensions of the thumbnails in horizontal view.
  *

@@ -18,7 +18,8 @@ import {
     FILMSTRIP_SIZE,
     Filmstrip,
     isFilmstripVisible,
-    TileView
+    TileView,
+    BubbleView
 } from '../../../filmstrip';
 import { AddPeopleDialog, CalleeInfoContainer } from '../../../invite';
 import { LargeVideo } from '../../../large-video';
@@ -237,6 +238,7 @@ class Conference extends AbstractConference<Props, *> {
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
+            _shouldDisplayBubbleView,
             _toolboxVisible
         } = this.props;
         const showGradient = _toolboxVisible;

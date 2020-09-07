@@ -65,6 +65,45 @@ const Filmstrip = {
         });
     },
 
+
+    /**
+     * Resizes thumbnails for tile view.
+     *
+     * @param {number} width - The new width of the thumbnails.
+     * @param {number} height - The new height of the thumbnails.
+     * @param {boolean} forceUpdate
+     * @returns {void}
+     */
+    resizeThumbnailsForBubbleView(width, height, forceUpdate = false) {
+        const thumbs = this._getThumbs(!forceUpdate);
+        const avatarSize = height / 2;
+
+        if (thumbs.localThumb) {
+            thumbs.localThumb.css({
+                'padding-top': '',
+                height: `${height}px`,
+                'min-height': `${height}px`,
+                'min-width': `${width}px`,
+                width: `${width}px`
+            });
+        }
+
+        if (thumbs.remoteThumbs) {
+            thumbs.remoteThumbs.css({
+                'padding-top': '',
+                height: `${height}px`,
+                'min-height': `${height}px`,
+                'min-width': `${width}px`,
+                width: `${width}px`
+            });
+        }
+
+        $('.avatar-container').css({
+            height: `${avatarSize}px`,
+            width: `${avatarSize}px`
+        });
+    },
+
     /**
      * Resizes thumbnails for horizontal view.
      *

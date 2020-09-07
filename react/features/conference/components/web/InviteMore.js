@@ -9,6 +9,7 @@ import { connect } from '../../../base/redux';
 import { beginAddPeople } from '../../../invite';
 import { isButtonEnabled, isToolboxVisible } from '../../../toolbox/functions.web';
 import { shouldDisplayTileView } from '../../../video-layout/functions';
+import { shouldDisplayBubbleView } from '../../../video-layout/functions';
 
 declare var interfaceConfig: Object;
 
@@ -88,6 +89,7 @@ function mapStateToProps(state) {
 
     return {
         _tileViewEnabled: shouldDisplayTileView(state),
+        _bubbleViewEnabled: shouldDisplayBubbleView(state),
         _visible: isToolboxVisible(state) && isButtonEnabled('invite') && isAlone && !hide
     };
 }

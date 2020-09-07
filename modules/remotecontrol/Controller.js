@@ -345,7 +345,7 @@ export default class Controller extends RemoteControlParticipant {
     }
 
     /**
-     * Executes this._stop() mehtod which stops processing the mouse and
+     * Executes this._stop() method which stops processing the mouse and
      * keyboard events, removes added listeners, enables the keyboard shortcuts,
      * displays dialog to notify the user that remote control session has ended.
      * In addition sends stop message to the controlled participant.

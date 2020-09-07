@@ -8,6 +8,7 @@ import { LocalRecordingLabel } from '../../local-recording';
 import { RecordingLabel } from '../../recording';
 import { TranscribingLabel } from '../../transcribing';
 import { shouldDisplayTileView } from '../../video-layout';
+import { shouldDisplayBubbleView } from '../../video-layout';
 import { VideoQualityLabel } from '../../video-quality';
 
 import { InsecureRoomNameLabel } from '.';
@@ -125,6 +126,6 @@ export default class AbstractLabels<P: Props, S> extends Component<P, S> {
 export function _abstractMapStateToProps(state: Object) {
     return {
         _filmstripVisible: isFilmstripVisible(state),
-        _showVideoQualityLabel: !shouldDisplayTileView(state)
+        _showVideoQualityLabel: !( shouldDisplayTileView(state) || shouldDisplayBubbleView(state) ),
     };
 }
