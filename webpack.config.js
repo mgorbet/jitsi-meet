@@ -3,6 +3,7 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const process = require('process');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { PassThrough } = require('stream');
 
 /**
  * The URL of the Jitsi Meet deployment to be proxy to in the context of
@@ -293,6 +294,8 @@ function devServerProxyBypass({ path }) {
             || path.startsWith('/lang/')
             || path.startsWith('/sounds/')
             || path.startsWith('/static/')
+            || path.startsWith('/index.html')
+            || path.startsWith('/interface_config.js')
             || path.endsWith('.wasm')) {
 
         return path;
