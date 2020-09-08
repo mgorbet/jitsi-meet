@@ -196,7 +196,7 @@ export function shouldDisplayBubbleView(state: Object = {}) {
         || isYoutubeVideoPlaying(state)
 
         // we are in tiled mode :
-         // (test to be added -mgg)
+         || shouldDisplayTileView(state)
     );
 
     return !shouldDisplayNormalMode;

@@ -531,6 +531,7 @@ class Toolbox extends Component<Props, State> {
      */
     _doToggleTileView() {
         this.props.dispatch(toggleTileView());
+
     }
 
     /**
@@ -541,6 +542,7 @@ class Toolbox extends Component<Props, State> {
      */
     _doToggleBubbleView() {
         this.props.dispatch(toggleBubbleView());
+
     }
 
     _onMouseOut: () => void;

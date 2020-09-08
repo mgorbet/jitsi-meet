@@ -72,6 +72,7 @@ export function toggleTileView() {
         const tileViewActive = shouldDisplayTileView(getState());
 
         dispatch(setTileView(!tileViewActive));
+
     };
 }
 
@@ -86,5 +87,6 @@ export function toggleBubbleView() {
         const bubbleViewActive = shouldDisplayBubbleView(getState());
 
         dispatch(setBubbleView(!bubbleViewActive));
+
     };
 }
