@@ -133,7 +133,7 @@ export default {
     tileViewRow: {
         flexDirection: 'row',
         justifyContent: 'center'
-    }
+    },
 
     bubbleView: {
         alignSelf: 'center'

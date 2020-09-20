@@ -3,13 +3,14 @@
 /* eslint-disable no-unused-vars */
 import { AtlasKitThemeProvider } from '@atlaskit/theme';
 import Logger from 'jitsi-meet-logger';
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 import { AudioLevelIndicator } from '../../../react/features/audio-level-indicator';
 import { Avatar as AvatarDisplay } from '../../../react/features/base/avatar';
+import { P5Canvas as VideoP5Canvas } from '../../../react/features/base/p5Canvas';
 import { i18next } from '../../../react/features/base/i18n';
 import {
     getParticipantCount,
@@ -21,7 +22,9 @@ import { DisplayName } from '../../../react/features/display-name';
 import {
     DominantSpeakerIndicator,
     RaisedHandIndicator,
-    StatusIndicators
+    StatusIndicators,
+    tileViewDimensions,
+    bubbleViewDimensions
 } from '../../../react/features/filmstrip';
 import {
     LAYOUTS,
@@ -30,6 +33,8 @@ import {
     shouldDisplayTileView,
     shouldDisplayBubbleView
 } from '../../../react/features/video-layout';
+
+
 /* eslint-enable no-unused-vars */
 
 const logger = Logger.getLogger(__filename);
@@ -82,6 +87,8 @@ export default class SmallVideo {
      * Constructor.
      */
     constructor(VideoLayout) {
+
+
         this.isAudioMuted = false;
         this.isVideoMuted = false;
         this.videoStream = null;
@@ -137,6 +144,7 @@ export default class SmallVideo {
         this.updateView = this.updateView.bind(this);
 
         this._onContainerClick = this._onContainerClick.bind(this);
+
     }
 
     /**
@@ -353,6 +361,16 @@ export default class SmallVideo {
     }
 
     /**
+     * Selects the HTML image element which displays this video's p5Canvas.
+     *
+     * @return {jQuery|HTMLElement} a jQuery selector pointing to the HTML image
+     * element which displays the p5Canvas.
+     */
+    $p5Canvas() {
+        return this.$container.find('.p5Canvas-container');
+    }
+
+    /**
      * Returns the display name element, which appears on the video thumbnail.
      *
      * @return {jQuery} a jQuery selector pointing to the display name element of
@@ -564,6 +582,30 @@ export default class SmallVideo {
     }
 
     /**
+     * Updates the react component displaying the video's p5Canvas with the passed in p5Canvas
+     * url.
+     *
+     * @returns {void}
+     */
+    initializeP5Canvas() {
+        const canv = this.$p5Canvas().get(0);
+
+        console.log(" ____ Going to initialize P5 Canvas...")
+
+        if (canv) {
+            ReactDOM.render(
+                <Provider store = { APP.store }>
+                    <VideoP5Canvas
+                        id = {'p5_'+this.id} 
+                        className = 'smvidP5Canvas'
+                        participantId = { this.id } />
+                </Provider>,
+                canv
+            );
+        }
+    }
+
+    /**
      * Unmounts any attached react components (particular the avatar image) from
      * the avatar container.
      *
@@ -574,6 +616,20 @@ export default class SmallVideo {
 
         if (thumbnail) {
             ReactDOM.unmountComponentAtNode(thumbnail);
+        }
+    }
+
+    /**
+     * Unmounts any attached react components (particular the P5Canvas) from
+     * the avatar container.
+     *
+     * @returns {void}
+     */
+    removeP5Canvas() {
+        const canv = this.$p5Canvas().get(0);
+
+        if (canv) {
+            ReactDOM.unmountComponentAtNode(canv);
         }
     }
 
@@ -659,6 +715,7 @@ export default class SmallVideo {
         this.removeConnectionIndicator();
         this.removeDisplayName();
         this.removeAvatar();
+        this.removeP5Canvas();
         this._unmountIndicators();
 
         // Remove whole container
@@ -705,6 +762,9 @@ export default class SmallVideo {
         if (currentLayout === LAYOUTS.TILE_VIEW) {
             statsPopoverPosition = 'right top';
             tooltipPosition = 'right';
+        } else if (currentLayout === LAYOUTS.BUBBLE_VIEW) {
+            statsPopoverPosition = 'right top';
+            tooltipPosition = 'right';        
         } else if (currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW) {
             statsPopoverPosition = this.statsPopoverLocation;
             tooltipPosition = 'left';
@@ -875,6 +935,7 @@ export default class SmallVideo {
             if (typeof thumbnailSize !== 'undefined') {
                 const { height, width } = thumbnailSize;
                 const avatarSize = height / 2;
+                const p5CanvasSize = width;
 
                 this.$container.css({
                     height: `${height}px`,
@@ -885,6 +946,10 @@ export default class SmallVideo {
                 this.$avatar().css({
                     height: `${avatarSize}px`,
                     width: `${avatarSize}px`
+                });
+                this.$p5Canvas().css({
+                    height: `${p5CanvasSize}px`,
+                    width: `${p5CanvasSize}px`
                 });
             }
             break;
@@ -896,6 +961,7 @@ export default class SmallVideo {
             if (typeof thumbnailSize !== 'undefined') {
                 const { height, width } = thumbnailSize;
                 const avatarSize = height / 2;
+                const p5CanvasSize = height;
 
                 this.$container.css({
                     height: `${height}px`,
@@ -906,6 +972,11 @@ export default class SmallVideo {
                 this.$avatar().css({
                     height: `${avatarSize}px`,
                     width: `${avatarSize}px`
+                });
+
+                this.$p5Canvas().css({
+                    height: `${p5CanvasSize}px`,
+                    width: `${p5CanvasSize}px`
                 });
             }
             break;

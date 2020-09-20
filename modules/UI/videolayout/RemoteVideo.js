@@ -46,11 +46,14 @@ function createContainer(spanId) {
         <div class = 'videocontainer__hoverOverlay'></div>
         <div class = 'displayNameContainer'></div>
         <div class = 'avatar-container'></div>
+        <div class = 'p5Canvas-container'></div>
         <div class ='presence-label-container'></div>
-        <span class = 'remotevideomenu'></span>`;
+        <span class = 'remotevideomenu'></span>`;     
 
     const remoteVideosContainer
         = document.getElementById('filmstripRemoteVideosContainer');
+
+ 
     const localVideoContainer
         = document.getElementById('localVideoTileViewContainer');
     
@@ -119,6 +122,8 @@ export default class RemoteVideo extends SmallVideo {
         this._stopRemoteControl = this._stopRemoteControl.bind(this);
 
         this.container.onclick = this._onContainerClick;
+
+
     }
 
     /**
@@ -128,6 +133,7 @@ export default class RemoteVideo extends SmallVideo {
         this.container = createContainer(this.videoSpanId);
         this.$container = $(this.container);
         this.initializeAvatar();
+        this.initializeP5Canvas();
         this._setThumbnailSize();
         this.initBrowserSpecificProperties();
         this.updateRemoteVideoMenu();

@@ -54,6 +54,7 @@ const FULL_SCREEN_EVENTS = [
 const LAYOUT_CLASSNAMES = {
     [LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW]: 'horizontal-filmstrip',
     [LAYOUTS.TILE_VIEW]: 'tile-view',
+    [LAYOUTS.BUBBLE_VIEW]: 'bubble-view',
     [LAYOUTS.VERTICAL_FILMSTRIP_VIEW]: 'vertical-filmstrip'
 };
 
@@ -192,6 +193,10 @@ class Conference extends AbstractConference<Props, *> {
             _showPrejoin
         } = this.props;
         const hideLabels = filmstripOnly || _iAmRecorder;
+
+
+        console.log("_layoutClassName " + _layoutClassName );
+        
 
         return (
             <div

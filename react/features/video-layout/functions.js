@@ -1,6 +1,7 @@
 // @flow
 
 import { getPinnedParticipant, getParticipantCount } from '../base/participants';
+import { isButtonEnabled } from '../toolbox/functions.web';
 import { isYoutubeVideoPlaying } from '../youtube-player/functions';
 
 import { LAYOUTS } from './constants';
@@ -140,6 +141,11 @@ export function shouldDisplayTileView(state: Object = {}) {
 
         // There is a shared YouTube video in the meeting
         || isYoutubeVideoPlaying(state)
+
+
+        // we are in bubble view mode :
+        || shouldDisplayBubbleView(state)
+
     );
 
     return !shouldDisplayNormalMode;

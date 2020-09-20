@@ -39,6 +39,7 @@ export default class LocalVideo extends SmallVideo {
         this._setThumbnailSize();
         this.updateDOMLocation();
 
+     
         this.localVideoId = null;
         this.bindHoverHandler();
         if (!config.disableLocalVideoFlip) {
@@ -61,6 +62,7 @@ export default class LocalVideo extends SmallVideo {
         // state. Redux stores the local user with a hardcoded participant id of
         // 'local' if no id has been assigned yet.
         this.initializeAvatar();
+        this.initializeP5Canvas();
 
         this.addAudioLevelIndicator();
         this.updateIndicators();
@@ -84,7 +86,8 @@ export default class LocalVideo extends SmallVideo {
             <div class = 'videocontainer__toptoolbar'></div>
             <div class = 'videocontainer__hoverOverlay'></div>
             <div class = 'displayNameContainer'></div>
-            <div class = 'avatar-container'></div>`;
+            <div class = 'avatar-container'></div>
+            <div class = 'p5Canvas-container'></div>`;     
 
         return containerSpan;
     }
@@ -249,8 +252,10 @@ export default class LocalVideo extends SmallVideo {
             this.container.parentElement.removeChild(this.container);
         }
 
-        const appendTarget = shouldDisplayTileView(APP.store.getState())
-            ? document.getElementById('localVideoTileViewContainer')
+        const appendTarget = (shouldDisplayTileView(APP.store.getState()) || shouldDisplayBubbleView(APP.store.getState()))
+            ? (shouldDisplayTileView(APP.store.getState()) 
+               ? document.getElementById('localVideoTileViewContainer')
+               : document.getElementById('localVideoBubbleViewContainer') )
             : document.getElementById('filmstripLocalVideoThumbnail');
 
         appendTarget && appendTarget.appendChild(this.container);

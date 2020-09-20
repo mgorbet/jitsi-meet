@@ -91,6 +91,8 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             avatarFailed: false
         };
 
+        console.log("____***___ Created new avatar");
+
         this._onAvatarLoadError = this._onAvatarLoadError.bind(this);
     }
 

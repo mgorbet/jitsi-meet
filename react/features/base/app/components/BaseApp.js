@@ -2,7 +2,7 @@
 
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 import _ from 'lodash';
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment , ReactDOM} from 'react';
 import p5 from 'p5';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
@@ -55,6 +55,7 @@ export default class BaseApp extends Component<*, State> {
     constructor(props: Object) {
         super(props);
 
+         console.log("constructor of main BaseApp");
         // Generating a React reference for use with P5 -mgg
         this.mainAppRef = React.createRef();
 
@@ -121,22 +122,22 @@ export default class BaseApp extends Component<*, State> {
              p5Canvas.clear();
 
             counter = 0;
-            console.log(" ********  SETUP in p5:  w: "+ p.width + " h: " + p.height);
+            console.log(" ********  SETUP in main p5:  w: "+ p.width + " h: " + p.height);
 
         }
 
         p.draw = () => {
             // do p5 draw stuff here for main P5 sketch -mgg
             if(p5Canvas) {
-                p5Canvas.fill(200, 100, 0);
-                p5Canvas.ellipse(p.mouseX, p.mouseY, 40, 40);
-                p.image(p5Canvas, 0, 0);
+                // p5Canvas.fill(200, 100, 0);
+                // p5Canvas.ellipse(p.mouseX, p.mouseY, 40, 40);
+                // p.image(p5Canvas, 0, 0);
             } else {
                 console.log(" *** We have lost the P5 canvas - it is " + p5Canvas);
             }
             counter++;
             if(counter%50 == 0) {
-                 console.log(" ** P5: x: " + p.mouseX + " y: " +p.mouseY);
+          //       console.log(" ** P5: x: " + p.mouseX + " y: " +p.mouseY);
             }
         }
 
@@ -192,10 +193,10 @@ export default class BaseApp extends Component<*, State> {
         }
 
         // main app ref is going to return the ref that p5Sketch is bound to as a div.  -mgg
-        console.log(" 3. render: this.mainappref is " + this.mainAppRef);
+        //console.log(" 3. render: this.mainappref is " + this.mainAppRef);
 
         return (
-              <div ref={this.mainAppRef} />
+              <div id="videoCanvas" className="videoCanvas" ref={this.mainAppRef} />
              // <BaseApp ref={this.mainAppRef} />
         );
     }

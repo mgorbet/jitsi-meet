@@ -1,6 +1,7 @@
 /* global $ */
 
 import Logger from 'jitsi-meet-logger';
+import { shouldDisplayTileView } from '../../../react/features/video-layout';
 
 import SmallVideo from '../videolayout/SmallVideo';
 
@@ -35,6 +36,7 @@ export default class SharedVideoThumb extends SmallVideo {
      *
      */
     initializeAvatar() {} // eslint-disable-line no-empty-function
+   // initializeP5Canvas() {} // eslint-disable-line no-empty-function
 
     /**
      *
@@ -60,8 +62,11 @@ export default class SharedVideoThumb extends SmallVideo {
 
         const remoteVideosContainer
             = document.getElementById('filmstripRemoteVideosContainer');
+        
         const localVideoContainer
-            = document.getElementById('localVideoTileViewContainer');        // manage bubble view here?
+              = document.getElementById('localVideoTileViewContainer');        // manage bubble view here?
+       // = (shouldDisplayTileView() || shouldDisplayBubbleView()) ? (shouldDisplayTileView() ? document.getElementById('localVideoTileViewContainer' : document.getElementById('localVideoBubbleViewContainer')) : null;    
+    
 
         remoteVideosContainer.insertBefore(container, localVideoContainer);
 

@@ -82,7 +82,7 @@ MiddlewareRegistry.register(store => next => action => {
         const state = store.getState();
 
         if (shouldDisplayBubbleView(state)) {
-            const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
+            const { width, height } = state['features/filmstrip'].bubbleViewDimensions.thumbnailSize;
 
             // Once the thumbnails are reactified this should be moved there too.
             Filmstrip.resizeThumbnailsForBubbleView(width, height, true);

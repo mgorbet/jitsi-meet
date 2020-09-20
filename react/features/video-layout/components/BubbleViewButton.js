@@ -13,6 +13,7 @@ import { getParticipantCount } from '../../base/participants';
 import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { setBubbleView } from '../actions';
+import { setTileView } from '../actions';
 import { shouldDisplayBubbleView } from '../functions';
 import logger from '../logger';
 
@@ -63,6 +64,7 @@ class BubbleViewButton<P: Props> extends AbstractButton<P, *> {
 
         logger.debug(`Bubble view ${value ? 'enable' : 'disable'}`);
         dispatch(setBubbleView(value));
+        dispatch(setTileView(false));
     }
 
     /**

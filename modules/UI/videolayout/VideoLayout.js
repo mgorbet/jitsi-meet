@@ -516,6 +516,8 @@ const VideoLayout = {
     changeUserAvatar(id, avatarUrl) {
         const smallVideo = VideoLayout.getSmallVideo(id);
 
+        console.log(" ___ setting up avatar....")
+
         if (smallVideo) {
             smallVideo.initializeAvatar();
         } else {

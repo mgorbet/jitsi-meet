@@ -46,7 +46,7 @@ type Props = {
     dispatch: Dispatch<any>,
 
     /**
-     * Callback to invoke when tile view is tapped.
+     * Callback to invoke when bubble view is tapped.
      */
     onClick: Function
 };

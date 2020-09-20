@@ -3,7 +3,7 @@
 import { SET_FILMSTRIP_ENABLED } from '../../filmstrip/actionTypes';
 import { SELECT_LARGE_VIDEO_PARTICIPANT } from '../../large-video/actionTypes';
 import { APP_STATE_CHANGED } from '../../mobile/background/actionTypes';
-import { SCREEN_SHARE_PARTICIPANTS_UPDATED, SET_TILE_VIEW } from '../../video-layout/actionTypes';
+import { SCREEN_SHARE_PARTICIPANTS_UPDATED, SET_TILE_VIEW, SET_BUBBLE_VIEW } from '../../video-layout/actionTypes';
 import { shouldDisplayTileView } from '../../video-layout/functions';
 import { shouldDisplayBubbleView } from '../../video-layout/functions';
 import { SET_AUDIO_ONLY } from '../audio-only/actionTypes';
@@ -39,6 +39,7 @@ MiddlewareRegistry.register(store => next => action => {
     case SET_AUDIO_ONLY:
     case SET_FILMSTRIP_ENABLED:
     case SET_TILE_VIEW:
+    case SET_BUBBLE_VIEW:
         _updateLastN(store);
         break;
     }
@@ -84,11 +85,12 @@ function _updateLastN({ getState }) {
     } else if (audioOnly) {
         const { screenShares } = state['features/video-layout'];
         const tileViewEnabled = shouldDisplayTileView(state);
+        const bubbleViewEnabled = shouldDisplayBubbleView(state);
         const largeVideoParticipantId = state['features/large-video'].participantId;
         const largeVideoParticipant
             = largeVideoParticipantId ? getParticipantById(state, largeVideoParticipantId) : undefined;
 
-        if (!tileViewEnabled && largeVideoParticipant && !largeVideoParticipant.local) {
+        if (!tileViewEnabled && !bubbleViewEnabled && largeVideoParticipant && !largeVideoParticipant.local) {
             lastN = (screenShares || []).includes(largeVideoParticipantId) ? 1 : 0;
         } else {
             lastN = 0;

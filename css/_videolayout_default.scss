@@ -203,7 +203,7 @@
 
 #localVideoWrapper video,
 #localVideoWrapper object {
-    border-radius: $borderRadius !important;
+    border-radius: $borderRadius;  // !important
     cursor: hand;
     object-fit: cover;
 }
@@ -541,6 +541,27 @@
         position: absolute;
     }
 }
+
+
+.p5Canvas-container {
+//     top: 50%;
+//     left: 50%;
+//     position: absolute;
+//    @include transform(translate(0%, 50%));
+//    @include absoluteAligning();
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    z-index:4;
+
+}
+
+// .p5Canvas {
+//     
+// }
 
 #videoNotAvailableScreen {
     text-align: center;
