@@ -361,9 +361,9 @@ export default class SmallVideo {
     }
 
     /**
-     * Selects the HTML image element which displays this video's p5Canvas.
+     * Selects the HTML element which displays this video's p5Canvas.
      *
-     * @return {jQuery|HTMLElement} a jQuery selector pointing to the HTML image
+     * @return {jQuery|HTMLElement} a jQuery selector pointing to the HTML div
      * element which displays the p5Canvas.
      */
     $p5Canvas() {
@@ -589,6 +589,7 @@ export default class SmallVideo {
      */
     initializeP5Canvas() {
         const canv = this.$p5Canvas().get(0);
+        const thisID = (this.id !== undefined) ? this.id : "localVideoContainer";
 
         console.log(" ____ Going to initialize P5 Canvas...")
 
@@ -596,9 +597,10 @@ export default class SmallVideo {
             ReactDOM.render(
                 <Provider store = { APP.store }>
                     <VideoP5Canvas
-                        id = {'p5_'+this.id} 
-                        className = 'smvidP5Canvas'
-                        participantId = { this.id } />
+                        id = {'p5_'+thisID}
+                        videobubble = {this.container}
+                        className = 'p5Canvas-class'
+                        participantId = { thisID } />
                 </Provider>,
                 canv
             );
@@ -965,9 +967,9 @@ export default class SmallVideo {
 
                 this.$container.css({
                     height: `${height}px`,
-                    'min-height': `${height}px`,
-                    'min-width': `${width}px`,
-                    width: `${width}px`
+                    //'min-height': `${height}px`,
+                    //'min-width': `${width}px`,
+                    width: `${height}px`
                 });
                 this.$avatar().css({
                     height: `${avatarSize}px`,
@@ -975,8 +977,8 @@ export default class SmallVideo {
                 });
 
                 this.$p5Canvas().css({
-                    height: `${p5CanvasSize}px`,
-                    width: `${p5CanvasSize}px`
+                    height: `${height}px`,
+                    width: `${height}px`
                 });
             }
             break;

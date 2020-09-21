@@ -146,8 +146,9 @@ export function calculateThumbnailSizeForBubbleView({
     const initialWidth = viewWidth / columns;
     const aspectRatioHeight = initialWidth / BUBBLE_ASPECT_RATIO;
     const height = Math.floor(Math.min(aspectRatioHeight, viewHeight / visibleRows));
-    const width = Math.floor(BUBBLE_ASPECT_RATIO * height);
-
+    // const width = Math.floor(BUBBLE_ASPECT_RATIO * height);
+    const width = height;
+    
     return {
         height,
         width

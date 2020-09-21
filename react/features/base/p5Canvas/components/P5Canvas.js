@@ -65,8 +65,9 @@ class P5Canvas extends React.Component {
 
 
         // Generating a React reference for use with P5 -mgg
-        this.p5CanvasRef = React.createRef();
-        console.log("___ p5Canvas constructor for video p5Canvas called with React ref created: " + this.p5CanvasRef);
+       // this.p5CanvasRef = React.createRef();
+       // console.log("___ p5Canvas constructor for video p5Canvas called with React ref created: " + this.p5CanvasRef);
+       console.log("___ p5Canvas constructor called by smallvideo.js, sent values for\n participant id: " + this.props.participantId + "\n id: " + this.props.id + "\n videobubble: " + this.props.videobubble.id);
 
     }
 
@@ -78,12 +79,14 @@ class P5Canvas extends React.Component {
      * 
      */
     componentDidMount() {
-        console.log(" ____ Mounted p5Canvas for smallVideo " + this.p5CanvasRef.current);
+        console.log(" ____ Mounted p5Canvas for smallVideo " + this.props.id );
+        console.log(" ____ Creating p5 object using 'null' ");
 
         this.setState();
 
         // create main P5 sketch bound to small video -mgg
-        this.videoP5 = new p5(this.vp5Sketch, window.document.getElementById(this.p5CanvasRef.current));
+//        this.videoP5 = new p5(this.vp5Sketch, window.document.getElementById(this.p5CanvasRef.current));
+        this.videoP5 = new p5(this.vp5Sketch, null);
     }
 
 
@@ -95,28 +98,23 @@ class P5Canvas extends React.Component {
     vp5Sketch = (p) => {
         let p5C;
         let counter;
-        let myid;
         let localVideo = false;
         let parent;
+        let vbub = this.props.videobubble;
         let pcanvas;
         let myrect = null;
 
         p.setup = () => {
             // do p5 setup stuff here for main P5 sketch -mgg
 
-            console.log(" 1. p5 Canvas setup: this.p5CanvasRef is " + this.p5CanvasRef);
+            console.log(" 1. p5 Canvas setup for id: " + this.props.id);
 
             var tHeight = 400;
             var tWidth = 400;
 
-            if(this.props.participantId === undefined) {
-                myid = "localVideoContainer";
-                localVideo = true;
-            } else {
-                myid = "participant_" + this.props.participantId;
-            }
+            if(this.props.videobubble == 'localVideoContainer') localVideo = true;
 
-            console.log(" 1. p5 Canvas setup: this.p5CanvasRef is " + this.p5CanvasRef + " and my id is " + myid + " (local video is " + localVideo + ")");
+            console.log(" 1. p5 Canvas setup: id is " + this.props.id + " (local video is " + localVideo + ")");
 
 
             // if (typeof thumbnailSize !== 'undefined') {
@@ -140,7 +138,8 @@ class P5Canvas extends React.Component {
             //  do p5 draw stuff here for main P5 sketch -mgg
 
             if(parent === undefined) {
-               parent = window.document.getElementById("p5_" + this.props.participantId);
+               console.log(" ... binding parent to " + this.props.id);
+               parent = window.document.getElementById(this.props.id);
                pcanvas.parent(parent);
             }
             else {
@@ -150,11 +149,7 @@ class P5Canvas extends React.Component {
             }
 
             if(myrect == null) return;
-
-            let disc = parent.parentNode;
-
             
-
             if(p5C) {
                 p5C.clear();
                 p5C.noFill();
@@ -166,16 +161,21 @@ class P5Canvas extends React.Component {
                 p.clear();
                 p.image(p5C, 0, 0);
 
-             //   disc.elt.style.width=""+toString((p.abs(200-p.mouseX)))+"px";
-             //   disc.elt.style.height=""+toString((p.abs(200-p.mouseX)))+"px";
+                if(vbub != null) {
+                    console.log("p5: setting " + vbub.id + " style height and width to " + (p.abs(200-p.mouseX))+"px");
+                    vbub.style.width=""+(p.abs(200-p.mouseX))+"px";
+                    vbub.style.height=""+(p.abs(200-p.mouseX))+"px";
+                }
+
             } else {
                 console.log(" *** We have lost the P5 canvas - it is " + p5C);
             }
              counter++;
             if(counter%50 == 0) {
-                 console.log(" ** smallVideo P5Canvas: x: " + p.mouseX + " y: " +p.mouseY);
-                 console.log(" ** smallVideo P5Canvas: container: " + myid + " x: " + myrect.x + " y: " + myrect.y  );
-                // console.log("id: " + this.props.participantId);
+
+              //   console.log(" ** smallVideo P5Canvas: x: " + p.mouseX + " y: " +p.mouseY);
+              //   console.log(" ** smallVideo P5Canvas: container: " + myid + " x: " + myrect.x + " y: " + myrect.y  );
+              //   console.log("id: " + this.props.participantId);
             }
         }
 
@@ -211,7 +211,6 @@ class P5Canvas extends React.Component {
         const {
             className,
             id,
-            size,
             testId
         } = this.props;
         const { p5CanvasFailed } = this.state;
@@ -220,7 +219,6 @@ class P5Canvas extends React.Component {
             className,
             id,
             onP5CanvasLoadError: undefined,
-            size,
             testId
         };
 

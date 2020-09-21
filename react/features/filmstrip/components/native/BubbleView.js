@@ -113,9 +113,9 @@ class BubbleView extends Component<Props> {
                 <TouchableWithoutFeedback onPress = { onClick }>
                     <View
                         style = {{
-                            ...styles.bubbleViewRows,
-                            minHeight: _height,
-                            minWidth: _width
+                            ...styles.bubbleViewRows //,
+                            //minHeight: _height,
+                            //minWidth: _width
                         }}>
                         { rowElements }
                     </View>

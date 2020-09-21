@@ -82,8 +82,8 @@ const Filmstrip = {
             thumbs.localThumb.css({
                 'padding-top': '',
                 height: `${height}px`,
-                'min-height': `${height}px`,
-                'min-width': `${width}px`,
+                'min-height': 0.1*`${height}px`,
+                'min-width': 0.1*`${width}px`,
                 width: `${width}px`
             });
         }
